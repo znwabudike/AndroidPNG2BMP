@@ -7,4 +7,8 @@ package com.github.znwabudike.androidpng2bmp;
  */
 public class Converter {
 
+
+    public boolean convert(byte[] outputStream){
+        return false;
+    }
 }
