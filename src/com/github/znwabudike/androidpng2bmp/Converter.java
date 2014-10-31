@@ -43,7 +43,7 @@ public class Converter {
 	public boolean isPNGHeader(byte[] stream){
 		String pngStart = "89504E470D0A1A0A";
 		log(pngStart);
-		int length = pngStart.length();
+		int length = pngStart.length() / 2;
 		
 		String compareStr = bytesToHex(Arrays.copyOfRange(stream, 0, length));
 		log(compareStr);
@@ -109,6 +109,6 @@ public class Converter {
 	}
 
 	public void log(String text){
-		Log.i("frump", text);
+		Log.v("frump", text);
 	}
 }
