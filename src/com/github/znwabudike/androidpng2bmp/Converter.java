@@ -1,6 +1,14 @@
 package com.github.znwabudike.androidpng2bmp;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+
+import android.content.Context;
+import android.content.res.Resources;
+
 import com.github.znwabudike.alogger.Log;
+
 
 
 
@@ -33,27 +41,32 @@ public class Converter {
 	}
 
 	public boolean isPNGHeader(byte[] stream){
-		String[] pngStart = {"89","50","4E","47","OD","OA","1A","0A"};
-		if (stream == null) return false; else
-			for(int i = 0; i < pngStart.length; i+=2){
-				if (i  % 2 == 0){
-					String bytestring = pngStart[i/2];	
-					byte[] comparebytes =  new byte[]{stream[i], stream[i+1]};
-					if(bytesToHex(comparebytes).compareTo(bytestring) != 0) {
-						return false;
-					}
-				}
-			}
-		return true;
+		String pngStart = "89504E470D0A1A0A";
+		log(pngStart);
+		int length = pngStart.length();
+		
+		String compareStr = bytesToHex(Arrays.copyOfRange(stream, 0, length));
+		log(compareStr);
+		return compareStr.compareTo(pngStart) == 0 ? true : false;
 	}
 
+	public byte[] getArrayFromResource(Context context, int resource) throws IOException{
+		byte[] byteArray;
+		Resources testRes = context.getResources();
+		InputStream streamIn = (InputStream) testRes.openRawResource(resource);
+		byteArray = new byte[streamIn.available()];
+		for(int i = 0; i < byteArray.length; i++){
+			byteArray[i] = (byte) streamIn.read();
+		}
+		return byteArray;
+	}
 
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 	public static String bytesToHex(byte[] bytes) {
 		char[] hexChars = new char[bytes.length * 2];
 		for ( int j = 0; j < bytes.length; j++ ) {
 			int v = bytes[j] & 0xFF;
-			hexChars[j * 2] = hexArray[v >>> 4];
+			hexChars[j * 2] = hexArray[v >> 4];
 			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
 		}
 		return new String(hexChars);
@@ -96,6 +109,6 @@ public class Converter {
 	}
 
 	public void log(String text){
-		Log.i(Converter.class.getSimpleName(), text);
+		Log.i("frump", text);
 	}
 }
