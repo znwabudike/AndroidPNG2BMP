@@ -3,7 +3,7 @@ AndroidPNG2BMP
 
 Convert Android PNG to Windows Bitmap
 
-Usage
+Usage:
 
     //get your png byte array...
     byte[] pngBytes = however();
